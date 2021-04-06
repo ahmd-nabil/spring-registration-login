@@ -25,7 +25,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                    .defaultSuccessUrl("/index", true);
     }
 
     @Override
