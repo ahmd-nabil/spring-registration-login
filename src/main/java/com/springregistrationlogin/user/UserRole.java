@@ -10,7 +10,7 @@ public enum UserRole {
     ADMIN(new ArrayList<>(Arrays.asList("GET", "POST", "PUT", "DELETE"))),
     USER(new ArrayList<>(Arrays.asList("GET")));
 
-    private List<SimpleGrantedAuthority> authorities;
+    private List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     UserRole(List<String> permissions) {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
