@@ -25,8 +25,13 @@ public class UserService implements UserDetailsService {
     @Transactional
     public ConfirmationToken signup(User user) {
         User oldUser = userRepository.findByEmail(user.getEmail()).orElse(null);
-        if(oldUser != null && oldUser.getEnabled()) {
-            throw new RuntimeException("Email already exists");
+        if(oldUser != null) {
+            if(oldUser.isEnabled())
+                throw new RuntimeException("Email already exists");
+            user.setId(oldUser.getId());
+            /**
+             *  TODO Make User_Token Bi-Directional to check if oldUser confirmation token is expired then send new token, otherwise DON'T
+            **/
         }
         userRepository.save(user);
         return confirmationTokenService.saveConfirmationToken(user);
