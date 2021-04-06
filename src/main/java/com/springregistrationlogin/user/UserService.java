@@ -17,4 +17,13 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
     }
+
+    public String signup(User user) {
+        boolean userExists = userRepository.findByEmail(user.getEmail()).isPresent();
+        if(userExists) {
+            throw new RuntimeException("Email already exists");
+        }
+        userRepository.save(user);
+        return ""; // TODO will return confirmation token
+    }
 }
