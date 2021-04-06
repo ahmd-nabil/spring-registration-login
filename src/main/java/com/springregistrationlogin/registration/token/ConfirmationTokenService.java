@@ -17,18 +17,19 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.findByToken(token).orElseThrow(() ->new RuntimeException("Token Not Found"));
     }
 
-    public void saveConfirmationToken(User user) {
-        ConfirmationToken token = generateConfirmationToken(user);
-        confirmationTokenRepository.save(token);
+    public ConfirmationToken saveConfirmationToken(User user) {
+        ConfirmationToken confirmationToken = generateConfirmationToken(user);
+        confirmationTokenRepository.save(confirmationToken);
+        return confirmationToken;
     }
 
     private ConfirmationToken generateConfirmationToken(User user) {
-        ConfirmationToken token = ConfirmationToken.builder()
+        ConfirmationToken confirmationToken = ConfirmationToken.builder()
                 .user(user)
                 .token(UUID.randomUUID().toString())
                 .createdTime(Instant.now())
                 .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
                 .build();
-        return token;
+        return confirmationToken;
     }
 }

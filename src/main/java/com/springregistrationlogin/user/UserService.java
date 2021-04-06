@@ -1,11 +1,13 @@
 package com.springregistrationlogin.user;
 
+import com.springregistrationlogin.registration.token.ConfirmationToken;
 import com.springregistrationlogin.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @AllArgsConstructor
@@ -20,14 +22,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
     }
 
-    public String signup(User user) {
-        boolean userExists = userRepository.findByEmail(user.getEmail()).isPresent();
-        if(userExists) {
+    @Transactional
+    public ConfirmationToken signup(User user) {
+        User oldUser = userRepository.findByEmail(user.getEmail()).orElse(null);
+        if(oldUser != null && oldUser.getEnabled()) {
             throw new RuntimeException("Email already exists");
         }
         userRepository.save(user);
-        confirmationTokenService.saveConfirmationToken(user);
-        return ""; // TODO will return confirmation token
+        return confirmationTokenService.saveConfirmationToken(user);
     }
 
     public void enableUser(User user) {
