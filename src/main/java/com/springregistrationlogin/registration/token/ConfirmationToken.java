@@ -3,11 +3,13 @@ package com.springregistrationlogin.registration.token;
 import com.springregistrationlogin.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

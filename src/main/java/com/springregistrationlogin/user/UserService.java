@@ -29,4 +29,8 @@ public class UserService implements UserDetailsService {
         confirmationTokenService.saveConfirmationToken(user);
         return ""; // TODO will return confirmation token
     }
+
+    public void enableUser(User user) {
+        user.setEnabled(true);
+    }
 }

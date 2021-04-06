@@ -13,6 +13,10 @@ import java.util.UUID;
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
+    public ConfirmationToken findByToken(String token) {
+        return confirmationTokenRepository.findByToken(token).orElseThrow(() ->new RuntimeException("Token Not Found"));
+    }
+
     public void saveConfirmationToken(User user) {
         ConfirmationToken token = generateConfirmationToken(user);
         confirmationTokenRepository.save(token);
